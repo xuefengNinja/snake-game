@@ -8,6 +8,7 @@ import pygame
 import sys
 import random
 import time
+from collections import namedtuple
 
 # Initialize pygame
 pygame.init()
@@ -19,12 +20,24 @@ GRID_WIDTH = WIDTH // GRID_SIZE
 GRID_HEIGHT = HEIGHT // GRID_SIZE
 FPS = 10
 
-# Colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+# Colors using namedtuple
+Color = namedtuple('Color', ['r', 'g', 'b'])
+BLACK = Color(0, 0, 0)
+WHITE = Color(255, 255, 255)
+GREEN = Color(0, 255, 0)
+RED = Color(255, 0, 0)
+BLUE = Color(0, 0, 255)
+
+# Rainbow colors
+RAINBOW_COLORS = [
+    Color(255, 0, 0),      # Red
+    Color(255, 127, 0),    # Orange
+    Color(255, 255, 0),    # Yellow
+    Color(0, 255, 0),      # Green
+    Color(0, 0, 255),      # Blue
+    Color(75, 0, 130),     # Indigo
+    Color(148, 0, 211)     # Violet
+]
 
 # Directions
 UP = (0, -1)
@@ -81,10 +94,15 @@ class Snake:
 
     def draw(self, surface):
         for i, pos in enumerate(self.positions):
-            color = GREEN if i == 0 else BLUE  # Head is green, body is blue
+            # Rainbow snake: head is still green, body segments use rainbow colors
+            if i == 0:
+                color = GREEN  # Head is still green
+            else:
+                # Use rainbow colors for the body, cycling through the colors
+                color = RAINBOW_COLORS[i % len(RAINBOW_COLORS)]
+            
             rect = pygame.Rect(pos[0] * GRID_SIZE, pos[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE)
             pygame.draw.rect(surface, color, rect)
-            pygame.draw.rect(surface, BLACK, rect, 1)  # Border
 
 class Food:
     def __init__(self, snake_positions):
@@ -99,13 +117,8 @@ class Food:
     def draw(self, surface):
         rect = pygame.Rect(self.position[0] * GRID_SIZE, self.position[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE)
         pygame.draw.rect(surface, RED, rect)
-        pygame.draw.rect(surface, BLACK, rect, 1)  # Border
 
-def draw_grid(surface):
-    for y in range(0, HEIGHT, GRID_SIZE):
-        for x in range(0, WIDTH, GRID_SIZE):
-            rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
-            pygame.draw.rect(surface, BLACK, rect, 1)
+# Grid drawing function removed as per request
 
 def draw_score(surface, score):
     font = pygame.font.SysFont('Arial', 20)
@@ -187,7 +200,6 @@ def main():
             
             # Draw everything
             screen.fill(WHITE)
-            draw_grid(screen)
             snake.draw(screen)
             food.draw(screen)
             draw_score(screen, snake.score)
@@ -200,3 +212,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
