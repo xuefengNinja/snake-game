@@ -8,6 +8,7 @@ import pygame
 import sys
 import random
 import time
+from collections import namedtuple
 
 # Initialize pygame
 pygame.init()
@@ -19,22 +20,23 @@ GRID_WIDTH = WIDTH // GRID_SIZE
 GRID_HEIGHT = HEIGHT // GRID_SIZE
 FPS = 10
 
-# Colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+# Colors using namedtuple
+Color = namedtuple('Color', ['r', 'g', 'b'])
+BLACK = Color(0, 0, 0)
+WHITE = Color(255, 255, 255)
+GREEN = Color(0, 255, 0)
+RED = Color(255, 0, 0)
+BLUE = Color(0, 0, 255)
 
 # Rainbow colors
 RAINBOW_COLORS = [
-    (255, 0, 0),      # Red
-    (255, 127, 0),    # Orange
-    (255, 255, 0),    # Yellow
-    (0, 255, 0),      # Green
-    (0, 0, 255),      # Blue
-    (75, 0, 130),     # Indigo
-    (148, 0, 211)     # Violet
+    Color(255, 0, 0),      # Red
+    Color(255, 127, 0),    # Orange
+    Color(255, 255, 0),    # Yellow
+    Color(0, 255, 0),      # Green
+    Color(0, 0, 255),      # Blue
+    Color(75, 0, 130),     # Indigo
+    Color(148, 0, 211)     # Violet
 ]
 
 # Directions
@@ -116,10 +118,7 @@ class Food:
         rect = pygame.Rect(self.position[0] * GRID_SIZE, self.position[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE)
         pygame.draw.rect(surface, RED, rect)
 
-# Removed the grid drawing function as per request
-def draw_grid(surface):
-    # Function kept for compatibility but does nothing
-    pass
+# Grid drawing function removed as per request
 
 def draw_score(surface, score):
     font = pygame.font.SysFont('Arial', 20)
@@ -201,7 +200,6 @@ def main():
             
             # Draw everything
             screen.fill(WHITE)
-            draw_grid(screen)
             snake.draw(screen)
             food.draw(screen)
             draw_score(screen, snake.score)
@@ -214,6 +212,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
 
 
 
